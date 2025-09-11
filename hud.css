@@ -1,0 +1,169 @@
+/* =========================
+   HUD.css - Estilo Futurista
+   ========================= */
+
+/* ==== Variables de HUD ==== */
+:root {
+  --hud-color: #00ff99; /* Se reemplaza dinámicamente según la unidad */
+  --hud-bg: rgba(0,0,0,0.8);
+  --hud-glow: 0 0 10px var(--hud-color);
+  --hud-font: 'Orbitron', monospace;
+}
+
+/* ==== Reset básico ==== */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--hud-font);
+  color: var(--hud-color);
+  background-color: black;
+  overflow: hidden;
+}
+
+/* ==== HUD container ==== */
+#hud-container {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+#hud-container.fade-in {
+  opacity: 1;
+}
+
+/* ==== Boot HUD ==== */
+#hud-startup {
+  background-color: black;
+  color: var(--hud-color);
+  font-family: var(--hud-font);
+  text-align: center;
+}
+
+#hud-boot-log {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+  line-height: 1.3rem;
+  max-width: 90%;
+}
+
+#hud-progress {
+  border-color: var(--hud-color);
+}
+
+#hud-progress-bar {
+  background-color: var(--hud-color);
+}
+
+/* ==== Scanlines ==== */
+#scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,255,65,0.2) 0 1px,
+    transparent 1px 3px
+  );
+  pointer-events: none;
+}
+
+/* ==== Barra superior ==== */
+header {
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--hud-color);
+}
+
+/* ==== Panels ==== */
+aside, section {
+  font-size: 0.75rem;
+  color: var(--hud-color);
+}
+
+#hud-weapons, #hud-alerts, #damage-monitor, #mission-panel, #hud-comm {
+  background-color: var(--hud-bg);
+  border: 1px solid var(--hud-color);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  box-shadow: 0 0 8px rgba(0,255,65,0.5);
+}
+
+/* ==== Weapon & Shield bars ==== */
+#weapon-energy-bar, #shield-bar, #mission-progress-bar {
+  transition: width 0.3s ease-in-out, background-color 0.3s;
+}
+
+/* ==== HUD log ==== */
+#hud-log {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  padding: 0.25rem;
+  max-height: 5rem;
+  overflow-y: auto;
+  background-color: rgba(0,0,0,0.5);
+  border-top: 1px solid var(--hud-color);
+}
+
+/* ==== Dynamic Alerts ==== */
+#dynamic-alert {
+  font-weight: bold;
+  font-size: 0.875rem;
+  color: white;
+  background-color: red;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(255,0,0,0.8);
+  transform-origin: center;
+}
+
+/* ==== Toasts ==== */
+#hud-toasts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.hud-toast {
+  background-color: rgba(0,0,0,0.85);
+  border-left: 4px solid var(--hud-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  box-shadow: 0 0 8px var(--hud-color);
+  color: var(--hud-color);
+  animation: toastIn 0.4s ease-out, toastOut 0.4s ease-in 3s forwards;
+}
+
+@keyframes toastIn {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* ==== Iconos de error en boot ==== */
+.boot-error-icon {
+  color: red;
+  margin-left: 0.5rem;
+  animation: blinkError 1s infinite;
+}
+
+@keyframes blinkError {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
+
+/* ==== Glow general ==== */
+* {
+  text-shadow: 0 0 4px var(--hud-color), 0 0 8px var(--hud-color);
+}
+
+/* ==== Responsividad ==== */
+@media (max-width: 768px){
+  #hud-weapons, #hud-alerts, #mission-panel, #damage-monitor {
+    width: 48%;
+  }
+  
+  #hud-main {
+    transform: scale(0.8);
+  }
+}

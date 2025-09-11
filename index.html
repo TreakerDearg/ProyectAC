@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Armored Core - Terminal Control</title>
+  <link rel="stylesheet" href="Login.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-green-400 font-mono min-h-screen relative">
+
+  <!-- ===== HUD Superior (Status Bar) ===== -->
+  <header class="absolute top-0 left-0 w-full flex justify-between items-center px-6 py-3 border-b border-green-400 text-xs tracking-widest z-20">
+    <span>SISTEMA: AC-CONTROL v4.0</span>
+    <span>UNIDAD: <strong>LAZARUS</strong></span>
+    <span id="sys-time">--:--:--</span>
+  </header>
+
+  <!-- ===== Pantalla de arranque (Boot Screen) ===== -->
+  <section id="boot-screen" class="fixed inset-0 flex flex-col justify-center bg-black p-6 z-30">
+    <pre id="boot-log" class="text-green-400 text-base sm:text-lg mb-4 leading-relaxed" aria-live="polite"></pre>
+    <pre id="boot-progress" class="text-green-400 font-bold tracking-wider">[..................................................] 0%</pre>
+  </section>
+
+  <!-- ===== Módulo de Autenticación + Paneles Laterales ===== -->
+  <main id="auth-container" class="hidden relative flex items-center justify-center min-h-screen px-4 z-10">
+
+    <!-- Panel izquierdo: Stats -->
+    <aside class="hud-panel hud-left hidden md:flex flex-col space-y-2">
+      <p>CORE STATUS: <span class="text-green-300">STANDBY</span></p>
+      <p>WEAPON SYSTEMS: <span class="text-green-300">LOCKED</span></p>
+      <p>ENERGY RESERVES: <span class="text-green-300">100%</span></p>
+      <p>SHIELD: <span class="text-green-300">ONLINE</span></p>
+      <p>ARMOR INTEGRITY: <span class="text-green-300">99%</span></p>
+    </aside>
+
+    <!-- Panel derecho: Alertas -->
+    <aside class="hud-panel hud-right hidden md:flex flex-col space-y-2">
+      <p>ALERT: <span class="text-red-500">NONE</span></p>
+      <p>ENEMY DETECTED: <span class="text-red-500">0</span></p>
+      <p>FUEL: <span class="text-green-300">FULL</span></p>
+      <p>RADAR: <span class="text-green-300">ACTIVE</span></p>
+      <p>MISSION STATUS: <span class="text-green-300">STANDBY</span></p>
+    </aside>
+
+    <!-- Login Module -->
+    <article id="login-module"
+      class="module bg-black p-6 rounded-xl shadow-xl border border-green-400 w-full max-w-sm relative z-10"
+      role="form" aria-labelledby="login-title">
+      <h1 id="login-title" class="text-2xl font-bold text-center mb-4 uppercase tracking-widest">Acceso Piloto</h1>
+      <form class="flex flex-col gap-4" aria-label="Formulario de inicio de sesión">
+        <label for="login-username" class="sr-only">Nombre de piloto</label>
+        <input type="text" id="login-username" name="username" placeholder="Nombre de piloto" autocomplete="username" required>
+
+        <label for="login-password" class="sr-only">Contraseña</label>
+        <input type="password" id="login-password" name="password" placeholder="Contraseña" autocomplete="current-password" required>
+
+        <button type="button" id="btn-login">Iniciar Sesión</button>
+      </form>
+      <p class="mt-4 text-sm text-center">
+        ¿No tienes cuenta?
+        <button id="swap-to-register" type="button" class="underline cursor-pointer hover:text-green-200 transition-colors">Regístrate</button>
+      </p>
+    </article>
+
+    <!-- Registro Module -->
+    <article id="register-module"
+      class="module bg-black p-6 rounded-xl shadow-xl border border-green-400 w-full max-w-sm hidden relative z-10"
+      role="form" aria-labelledby="register-title">
+      <h1 id="register-title" class="text-2xl font-bold text-center mb-4 uppercase tracking-widest">Registro Piloto</h1>
+      <form class="flex flex-col gap-4" aria-label="Formulario de registro">
+        <label for="register-username" class="sr-only">Nombre de piloto</label>
+        <input type="text" id="register-username" name="new-username" placeholder="Nombre de piloto" autocomplete="username" required>
+
+        <label for="register-password" class="sr-only">Contraseña</label>
+        <input type="password" id="register-password" name="new-password" placeholder="Contraseña" autocomplete="new-password" required>
+
+        <button type="button" id="btn-register">Registrar</button>
+      </form>
+      <p class="mt-4 text-sm text-center">
+        ¿Ya tienes cuenta?
+        <button id="swap-to-login" type="button" class="underline cursor-pointer hover:text-green-200 transition-colors">Inicia Sesión</button>
+      </p>
+    </article>
+  </main>
+
+  <!-- ===== HUD (Unidad Armored Core) ===== -->
+  <section id="ac-hud" class="hidden fixed inset-0 flex flex-col justify-center bg-black p-8 text-green-400 font-mono z-20" aria-live="polite">
+    <pre id="ac-log" class="text-base sm:text-lg leading-relaxed"></pre>
+    <div class="mt-6 text-center text-xs tracking-widest text-green-500">
+      [NUCLEO SINCRONIZADO] — MODO COMBATE LISTO — ARMAS EN ESPERA
+    </div>
+  </section>
+
+  <!-- ===== Terminal Toast ===== -->
+  <aside id="terminal-toast" role="alert" aria-live="assertive"></aside>
+
+  <script>
+    // Reloj dinámico
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('sys-time').textContent = now.toLocaleTimeString();
+    }, 1000);
+  </script>
+
+  <script src="UI2.js"></script>
+
+</body>
+</html>
