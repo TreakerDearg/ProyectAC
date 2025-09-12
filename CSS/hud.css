@@ -1,10 +1,10 @@
 /* =========================
-   HUD.css - Estilo Futurista Avanzado
+   HUD.css - Ajustado para no solapar
    ========================= */
 
 /* ==== Variables globales ==== */
 :root {
-  --hud-color: #00ff99; /* Dinámico según la unidad */
+  --hud-color: #00ff99;
   --hud-bg: rgba(0, 0, 0, 0.75);
   --hud-glow: 0 0 12px var(--hud-color), 0 0 24px var(--hud-color);
   --hud-font: 'Orbitron', monospace;
@@ -17,8 +17,8 @@ body, html {
   font-family: var(--hud-font);
   color: var(--hud-color);
   background-color: #000;
-  overflow: hidden;
   height: 100%;
+  overflow: hidden;
 }
 
 /* ==== HUD container ==== */
@@ -36,38 +36,11 @@ body, html {
   color: var(--hud-color);
   font-family: var(--hud-font);
   text-align: center;
+  z-index: 9999;
 }
 
-#hud-boot-log {
-  white-space: pre-wrap;
-  font-size: 0.9rem;
-  line-height: 1.4rem;
-  max-width: 90%;
-  margin: 0 auto;
-  text-align: left;
-}
-
-#hud-progress {
-  border: 1px solid var(--hud-color);
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-#hud-progress-bar {
-  background: linear-gradient(90deg, var(--hud-color), #008f5a);
-  height: 100%;
-  width: 0;
-  box-shadow: var(--hud-glow);
-}
-
-/* ==== Scanlines & CRT ==== */
+/* ==== Scanlines ==== */
 #scanlines {
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 255, 65, 0.2) 0 1px,
-    transparent 1px 3px
-  );
   pointer-events: none;
   animation: flicker 4s infinite;
 }
@@ -82,31 +55,42 @@ header {
   border-bottom: 1px solid var(--hud-color);
   background: rgba(0, 0, 0, 0.5);
   box-shadow: inset 0 -2px 8px rgba(0, 255, 100, 0.2);
+  height: 40px;
+  z-index: 50;
 }
 
 /* ==== Panels ==== */
 aside, section {
   font-size: 0.8rem;
   color: var(--hud-color);
-}
-
-#hud-weapons, #hud-alerts, #damage-monitor, #mission-panel, #hud-comm {
   background-color: var(--hud-bg);
   border: 1px solid var(--hud-color);
   border-radius: 0.75rem;
   padding: 0.75rem;
   box-shadow: var(--hud-glow);
   backdrop-filter: blur(6px);
+  max-height: 40%;
+  overflow-y: auto;
 }
 
-/* ==== Weapon & Shield bars ==== */
-#weapon-energy-bar, #shield-bar, #mission-progress-bar {
-  transition: width 0.4s ease, background-color 0.3s;
-  height: 6px;
-  border-radius: 3px;
+/* ==== Colocación fija de paneles principales ==== */
+#hud-weapons { top: 3.5rem; left: 1rem; width: 260px; position: absolute; }
+#hud-alerts { top: 3.5rem; right: 1rem; width: 260px; position: absolute; }
+#damage-monitor { bottom: 1rem; left: 1rem; width: 260px; position: absolute; }
+#mission-panel { bottom: 1rem; right: 1rem; width: 280px; position: absolute; }
+#hud-comm { top: 50%; right: 290px; transform: translateY(-50%); width: 300px; position: absolute; }
+
+/* ==== Radar central ==== */
+#hud-main {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
-/* ==== HUD log ==== */
+/* ==== Log en footer ==== */
 #hud-log {
   font-size: 0.8rem;
   line-height: 1.2rem;
@@ -116,20 +100,10 @@ aside, section {
   background-color: rgba(0, 0, 0, 0.6);
   border-top: 1px solid var(--hud-color);
   box-shadow: inset 0 2px 6px rgba(0, 255, 100, 0.2);
-}
-
-/* ==== Dynamic Alerts ==== */
-#dynamic-alert {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #fff;
-  background: linear-gradient(90deg, #ff1e1e, #8f0000);
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-  transform-origin: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 /* ==== Toasts ==== */
@@ -145,60 +119,67 @@ aside, section {
   width: 320px;
 }
 
-.hud-toast {
-  background: rgba(0, 0, 0, 0.9);
-  border-left: 4px solid var(--hud-color);
-  padding: 0.6rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.8rem;
-  box-shadow: var(--hud-glow);
-  color: var(--hud-color);
-  animation: toastIn 0.4s ease-out, toastOut 0.5s ease-in 4s forwards;
+/* ==== Botones secretos ==== */
+#secret-buttons {
+  bottom: 90px;
+  right: 50%;
+  transform: translateX(50%);
+  position: absolute;
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
   z-index: 1000;
 }
-.hud-toast.error {
-  border-left-color: #ff3333;
-  color: #ff3333;
-  text-shadow: 0 0 6px #ff3333, 0 0 12px #ff0000;
-  box-shadow: 0 0 12px #ff3333;
+#secret-buttons a {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--hud-color);
+  border-radius: 0.5rem;
+  background: rgba(0,0,0,0.7);
+  color: var(--hud-color);
+  transition: background 0.3s;
 }
-
-@keyframes toastIn {
-  0% { opacity: 0; transform: translateX(100%) scale(0.9); }
-  100% { opacity: 1; transform: translateX(0) scale(1); }
-}
-@keyframes toastOut {
-  0% { opacity: 1; transform: translateX(0) scale(1); }
-  100% { opacity: 0; transform: translateX(100%) scale(0.9); }
-}
-
-/* ==== Boot error icon ==== */
-.boot-error-icon {
-  color: #ff3333;
-  margin-left: 0.5rem;
-  animation: blinkError 1s infinite;
-}
-@keyframes blinkError {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.2; }
-}
-
-/* ==== Glow global ==== */
-* {
-  text-shadow: 0 0 6px var(--hud-color), 0 0 12px var(--hud-color);
+#secret-buttons a:hover {
+  background: rgba(0,255,100,0.3);
 }
 
 /* ==== Responsividad ==== */
-@media (max-width: 768px) {
-  #hud-weapons, #hud-alerts, #mission-panel, #damage-monitor {
-    width: 46%;
+@media (max-width: 1024px) {
+  #hud-weapons, #hud-alerts,
+  #damage-monitor, #mission-panel,
+  #hud-comm {
+    width: 200px;
     font-size: 0.7rem;
   }
-  #hud-main {
-    transform: scale(0.8);
+}
+
+@media (max-width: 768px) {
+  #hud-weapons, #hud-alerts,
+  #damage-monitor, #mission-panel,
+  #hud-comm {
+    position: static;
+    width: 100%;
+    max-height: none;
   }
-  #hud-toasts {
-    width: 90%;
-    right: 5%;
+  #hud-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-y: auto;
+  }
+  #hud-main {
+    order: -1;
+    transform: scale(0.7);
+  }
+  #hud-log {
+    position: static;
+    width: 100%;
+  }
+  #secret-buttons {
+    position: static;
+    transform: none;
+    justify-content: center;
   }
 }
