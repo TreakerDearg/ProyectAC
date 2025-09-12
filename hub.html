@@ -127,18 +127,14 @@
     </div>
 
     <!-- === Botones ocultos === -->
-<!-- === Botones secretos (aparecen tras 2 min) === -->
-<div id="secret-buttons" class="absolute bottom-20 right-1/2 translate-x-1/2 flex gap-4 opacity-0 pointer-events-none transition-opacity duration-1000 z-[999]">
-  <a href="contacto.html" id="btn-com-system" class="px-4 py-2 border border-green-400 rounded-lg bg-black/70 text-green-400 hover:bg-green-700/40 transition">
-    COM SYSTEM
-  </a>
-  <a href="portafolio.html" id="btn-expediente" class="px-4 py-2 border border-green-400 rounded-lg bg-black/70 text-green-400 hover:bg-green-700/40 transition">
-    EXPEDIENTE
-  </a>
-</div>
+    <div id="hud-hidden-buttons" class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex gap-4 hidden z-50">
+      <a href="contacto.html" class="px-4 py-2 border border-green-400 rounded bg-black/70 text-green-400 hover:bg-green-400 hover:text-black transition">COM SYSTEM</a>
+      <a href="portafolio.html" class="px-4 py-2 border border-green-400 rounded bg-black/70 text-green-400 hover:bg-green-400 hover:text-black transition">EXPEDIENTE</a>
+    </div>
 
+  </div>
 
   <!-- Scripts del HUD -->
-  <script src="js/HUD.js"></script>
+  <script src="JS/hud.js"></script>
 </body>
 </html>

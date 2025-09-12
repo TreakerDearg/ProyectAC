@@ -184,41 +184,6 @@ function showToast(message, error = false) {
   setTimeout(() => gsap.to(toast, { opacity: 0, y: -20, duration: 0.5, onComplete: () => toast.remove() }), 4000);
 }
 
-// ===== Radar con canvas =====
-function initRadar() {
-  const canvas = $("radar-canvas");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  const { width, height } = canvas;
-  const [centerX, centerY] = [width / 2, height / 2];
-  const radius = width / 2 - 10;
-
-  const blips = Array.from({ length: 10 }, () => ({
-    angle: Math.random() * Math.PI * 2,
-    distance: Math.random() * radius,
-    speed: 0.01 + Math.random() * 0.02
-  }));
-
-  (function drawRadar() {
-    ctx.clearRect(0, 0, width, height);
-    ctx.strokeStyle = themeColor;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.stroke();
-
-    blips.forEach(b => {
-      b.angle += b.speed;
-      ctx.fillStyle = themeColor;
-      ctx.beginPath();
-      ctx.arc(centerX + b.distance * Math.cos(b.angle), centerY + b.distance * Math.sin(b.angle), 4, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    requestAnimationFrame(drawRadar);
-  })();
-}
 
 // ===== Iniciar Boot =====
 typeBootLine();
