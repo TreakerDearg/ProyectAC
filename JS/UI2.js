@@ -1,5 +1,4 @@
 // --- AC Terminal UI Unificado ---
-
 // ===== Elementos =====
 const bootScreen     = document.getElementById('boot-screen');
 const authContainer  = document.getElementById('auth-container');
@@ -17,7 +16,7 @@ const acLog          = document.getElementById('ac-log');
 const terminalToast  = document.getElementById('terminal-toast');
 
 // ===== Datos =====
-const acUnits = ['Lázaro','Chronos','Vulture','Orion','Titan','Aegis','Phantom'];
+const acUnits = ['LAZARO','CHRONOS','VULTURE','ORION','TITAN','AEGIS','PHANTOM']; // ✅ sin acentos y en mayúsculas
 const logLines = [
   "[SISTEMA] Iniciando subsistemas...",
   "[SISTEMA] Verificando integridad de la unidad...",
@@ -129,11 +128,11 @@ function blinkEffect(element, duration = 3000){
 
 // Login exitoso -> AC HUD
 function loginExitosa(username){
-  const unit = acUnits[Math.floor(Math.random()*acUnits.length)];
+  const unit = acUnits[Math.floor(Math.random()*acUnits.length)]; // ✅ ahora siempre en mayúsculas
 
   // Guardamos la unidad y usuario en sessionStorage
   sessionStorage.setItem('piloto', username);
-  sessionStorage.setItem('unidad', unit);
+  sessionStorage.setItem('unidad', unit); // ✅ HUD.js ya espera en mayúsculas
 
   authContainer.classList.add('fade-out');
   setTimeout(() => {

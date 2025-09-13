@@ -1,0 +1,119 @@
+/* =========================
+   missions.css - Panel de Misiones
+   ========================= */
+
+/* Contenedor principal del panel */
+#mission-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid #00ff99;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
+  padding: 1rem;
+  font-family: 'Orbitron', monospace;
+  z-index: 1000;
+  color: #d1fae5;
+}
+
+/* Título */
+#mission-panel h2 {
+  font-size: 1rem;
+  color: #00ff99;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+/* Lista de misiones */
+#mission-list {
+  list-style: none;
+  padding-left: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Cada misión */
+.mission-item {
+  margin-bottom: 0.75rem;
+  padding: 0.25rem;
+  background: rgba(0, 255, 153, 0.05);
+  border-left: 3px solid #00ff99;
+  border-radius: 0.25rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+/* Efecto hover */
+.mission-item:hover {
+  transform: translateX(5px);
+  background: rgba(0, 255, 153, 0.12);
+}
+
+/* Tarea */
+.mission-task {
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+/* Descripción */
+.mission-desc {
+  font-size: 0.75rem;
+  color: #6ee7b7;
+  margin-bottom: 0.25rem;
+}
+
+/* Contenedor de barra de progreso */
+.mission-progress-container {
+  height: 6px;
+  width: 100%;
+  background: #111;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* Barra de progreso de la misión */
+.mission-progress-bar {
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s ease, background 0.5s ease;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(0, 255, 153, 0.5);
+}
+
+/* Barra global de progreso */
+#mission-progress-bar {
+  height: 6px;
+  background: linear-gradient(90deg, #34d399 25%, #111 0%);
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  transition: width 0.5s ease, background 0.5s ease;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+}
+
+/* Scroll futurista */
+#mission-list::-webkit-scrollbar {
+  width: 6px;
+}
+#mission-list::-webkit-scrollbar-track {
+  background: rgba(0, 255, 153, 0.1);
+}
+#mission-list::-webkit-scrollbar-thumb {
+  background: #00ff99;
+  border-radius: 10px;
+}
+
+/* Animación de aparición */
+.mission-item {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

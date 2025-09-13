@@ -236,3 +236,91 @@ body {
   transition: all 0.25s ease;
 }
 
+/* ========================
+   Estilo Base para Modales
+   ======================== */
+
+.hud-modal {
+  position: absolute;
+  background-color: rgba(0,0,0,0.75);
+  border: 1px solid #00ff99;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #00ff99;
+  box-shadow: 0 0 10px rgba(0,255,65,0.5);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 100;
+}
+
+/* Oculto por defecto */
+.hud-modal.hidden {
+  display: none;
+}
+
+/* ========================
+   Posicionamiento Paneles
+   ======================== */
+
+/* Superior Izquierda */
+.modal-top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+/* Superior Derecha */
+.modal-top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Medio Izquierda */
+.modal-middle-left {
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+}
+
+/* Medio Derecha */
+.modal-middle-right {
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+}
+
+/* Inferior Izquierda */
+.modal-bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+/* Inferior Derecha */
+.modal-bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+/* ========================
+   Scroll interno y overflow
+   ======================== */
+
+.hud-modal .scrollable {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* ========================
+   Animaciones adicionales (opcional)
+   ======================== */
+
+.hud-modal.show {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hud-modal.hide {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}

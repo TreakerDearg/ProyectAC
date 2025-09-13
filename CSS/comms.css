@@ -1,0 +1,131 @@
+/* =========================
+   COMMS.css - Panel Chat IA Mejorado
+   ========================= */
+
+/* Contenedor principal */
+#hud-comm {
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #00ff99;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
+  overflow: hidden;
+  font-family: 'Orbitron', monospace;
+  position: absolute;
+  padding: 0.2rem;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+#hud-comm:hover {
+  box-shadow: 0 0 30px rgba(0, 255, 153, 0.7);
+  border-color: #00ffcc;
+}
+
+/* Posicionamientos posibles */
+#hud-comm.top-left { top: 20px; left: 20px; }
+#hud-comm.top-right { top: 20px; right: 20px; }
+#hud-comm.middle-left { top: 50%; left: 20px; transform: translateY(-50%); }
+#hud-comm.middle-right { top: 50%; right: 20px; transform: translateY(-50%); }
+#hud-comm.bottom-left { bottom: 20px; left: 20px; }
+#hud-comm.bottom-right { bottom: 20px; right: 20px; }
+
+/* Log de chat */
+#comm-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  scrollbar-width: thin;
+  scrollbar-color: #00ff99 rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Scrollbar futurista */
+#comm-log::-webkit-scrollbar {
+  width: 6px;
+}
+#comm-log::-webkit-scrollbar-track {
+  background: rgba(0, 255, 153, 0.05);
+}
+#comm-log::-webkit-scrollbar-thumb {
+  background: #00ff99;
+  border-radius: 10px;
+  box-shadow: 0 0 6px #00ff99;
+}
+
+/* Mensajes con animación */
+#comm-log div {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.35s ease forwards;
+}
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mensajes de usuario */
+.user-message {
+  align-self: flex-end;
+  text-align: right;
+  color: #00ffcc;
+  font-weight: bold;
+  text-shadow: 0 0 4px #00ffcc;
+}
+
+/* Mensajes de IA por tipo */
+.ai-gemini { color: #6ee7b7; text-shadow: 0 0 6px #6ee7b7; }    
+.ai-vulkan { color: #f87171; text-shadow: 0 0 6px #f87171; }    
+.ai-cortana { color: #93c5fd; text-shadow: 0 0 6px #93c5fd; }   
+.ai-darpa { color: #facc15; text-shadow: 0 0 6px #facc15; }     
+.ai-uroboros { color: #e5e5e5; text-shadow: 0 0 6px #e5e5e5; }  
+.ai-keraunnos { color: #a78bfa; text-shadow: 0 0 6px #a78bfa; } 
+
+/* Input de mensajes */
+#comm-input {
+  border-top: 2px solid #00ff99;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.9);
+  color: #d1fae5;
+  outline: none;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 0 6px rgba(0, 255, 153, 0.4);
+  border-radius: 0 0 0.6rem 0.6rem;
+}
+#comm-input:focus {
+  background: rgba(0, 255, 153, 0.05);
+  box-shadow: 0 0 12px #00ff99, inset 0 0 8px #00ff99;
+}
+
+/* Mensajes de alerta destacados */
+#comm-log .alert {
+  color: #ff0000;
+  font-weight: bold;
+  text-shadow: 0 0 8px #ff0000;
+}
+
+/* Transición y hover general */
+#hud-comm {
+  transition: all 0.3s ease;
+}
+#hud-comm:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 153, 0.7);
+  border-color: #00ffcc;
+}
+
+/* Mejoras opcionales: hover sobre mensaje */
+#comm-log div:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Input adaptativo */
+#comm-input::placeholder {
+  color: rgba(209, 250, 229, 0.6);
+}
