@@ -277,9 +277,6 @@ const AIs = {
     }
   }
 };
-
-
-
   // ==== Selección persistente de IA ====
   function getAssignedAI() {
     let iaName = localStorage.getItem("ia_asignada");
@@ -407,5 +404,23 @@ const respondFromAI = (userMsg = "") => {
   const delay = 800 + response.length * 20;
   setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
 };
+
+// ==== Mensajes automáticos periódicos robustos ====
+setInterval(() => {
+  if (!autoResponsesActive) return;
+
+  const categories = ["normal","humor","motivacion","misterio","alerta"];
+  const category = categories[Math.floor(Math.random() * categories.length)];
+
+  // Pool seguro de respuestas
+  let pool = activeAI.responses[category];
+  if (!pool || pool.length === 0) pool = activeAI.responses.normal;
+
+  const response = pool[Math.floor(Math.random() * pool.length)];
+
+  const delay = 800 + response.length * 20;
+  setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
+}, 15000 + Math.random() * 5000);
+
 
 })();
