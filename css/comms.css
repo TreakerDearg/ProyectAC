@@ -1,5 +1,5 @@
 /* =========================
-   COMMS.css - Panel Chat IA Mejorado
+   COMMS.css - Panel Chat IA Mejorado v2
    ========================= */
 
 /* Contenedor principal */
@@ -8,7 +8,7 @@
   flex-direction: column;
   height: 340px;
   width: 300px;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   border: 2px solid #00ff99;
   border-radius: 0.75rem;
   box-shadow: 0 0 20px rgba(0, 255, 153, 0.5);
@@ -20,7 +20,7 @@
   transition: all 0.3s ease;
 }
 #hud-comm:hover {
-  box-shadow: 0 0 30px rgba(0, 255, 153, 0.7);
+  box-shadow: 0 0 35px rgba(0, 255, 153, 0.8);
   border-color: #00ffcc;
 }
 
@@ -64,6 +64,7 @@
   opacity: 0;
   transform: translateY(10px);
   animation: fadeInUp 0.35s ease forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0); }
@@ -75,16 +76,31 @@
   text-align: right;
   color: #00ffcc;
   font-weight: bold;
-  text-shadow: 0 0 4px #00ffcc;
+  text-shadow: 0 0 6px #00ffcc;
+  background: rgba(0, 255, 204, 0.1);
+  padding: 3px 6px;
+  border-radius: 4px;
 }
 
 /* Mensajes de IA por tipo */
-.ai-gemini { color: #6ee7b7; text-shadow: 0 0 6px #6ee7b7; }    
-.ai-vulkan { color: #f87171; text-shadow: 0 0 6px #f87171; }    
-.ai-cortana { color: #93c5fd; text-shadow: 0 0 6px #93c5fd; }   
-.ai-darpa { color: #facc15; text-shadow: 0 0 6px #facc15; }     
-.ai-uroboros { color: #e5e5e5; text-shadow: 0 0 6px #e5e5e5; }  
-.ai-keraunnos { color: #a78bfa; text-shadow: 0 0 6px #a78bfa; } 
+.ai-gemini { color: #6ee7b7; text-shadow: 0 0 8px #6ee7b7; }    
+.ai-vulkan { color: #f87171; text-shadow: 0 0 8px #f87171; }    
+.ai-cortana { color: #93c5fd; text-shadow: 0 0 8px #93c5fd; }   
+.ai-darpa { color: #facc15; text-shadow: 0 0 8px #facc15; }     
+.ai-uroboros { color: #e5e5e5; text-shadow: 0 0 8px #e5e5e5; }  
+.ai-keraunnos { color: #a78bfa; text-shadow: 0 0 8px #a78bfa; } 
+
+/* Fondo suave para mensajes IA */
+#comm-log div.ai-gemini,
+#comm-log div.ai-vulkan,
+#comm-log div.ai-cortana,
+#comm-log div.ai-darpa,
+#comm-log div.ai-uroboros,
+#comm-log div.ai-keraunnos {
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.05);
+}
 
 /* Input de mensajes */
 #comm-input {
@@ -108,21 +124,21 @@
   color: #ff0000;
   font-weight: bold;
   text-shadow: 0 0 8px #ff0000;
+  background: rgba(255,0,0,0.05);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 /* Transición y hover general */
-#hud-comm {
-  transition: all 0.3s ease;
-}
 #hud-comm:hover {
-  box-shadow: 0 0 25px rgba(0, 255, 153, 0.7);
+  box-shadow: 0 0 40px rgba(0, 255, 153, 0.8);
   border-color: #00ffcc;
 }
 
-/* Mejoras opcionales: hover sobre mensaje */
+/* Hover sobre mensaje */
 #comm-log div:hover {
   transform: scale(1.02);
-  transition: transform 0.2s ease;
+  box-shadow: 0 0 12px rgba(0,255,153,0.3);
 }
 
 /* Input adaptativo */

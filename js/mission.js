@@ -76,9 +76,26 @@
     mission.progress = Math.min(1, mission.progress + increment);
     renderMissions();
 
-    // Opcional: loguear actualización en COMMS si existe
+    // Log en COMMS
     if (typeof addMessage === "function") {
       addMessage(`[MISION] "${taskName}" progresó al ${(mission.progress*100).toFixed(0)}%.`, "text-green-300");
+    }
+  };
+
+  // ==== Función pública para mostrar/ocultar el panel de misiones ====
+  window.toggleMissionPanel = (forceState) => {
+    if (forceState === true) {
+      missionPanel.classList.add("active");
+    } else if (forceState === false) {
+      missionPanel.classList.remove("active");
+    } else {
+      missionPanel.classList.toggle("active");
+    }
+
+    // Log en COMMS
+    if (typeof addMessage === "function") {
+      const state = missionPanel.classList.contains("active") ? "MOSTRADO" : "OCULTADO";
+      addMessage(`[MISIONES] Panel ${state}.`, "text-yellow-300");
     }
   };
 
@@ -90,6 +107,7 @@
     renderMissions();
   }, 4000);
 
-  // ==== Render inicial ====
+  // ==== Render inicial y mostrar panel ====
   renderMissions();
+  missionPanel.classList.add("active"); // se muestra por defecto al iniciar
 })();

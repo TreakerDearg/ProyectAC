@@ -343,9 +343,12 @@ createInput();
 
 // ==== Manejo de input con comandos y contexto ====
 const handleUserInput = (text) => {
-  addMessage(text, "user-message"); // muestra el mensaje del usuario
+  //  Mostrar mensaje del usuario en COMMS
+  addMessage(text, "user-message");
 
   const cmd = text.toLowerCase().trim();
+
+  // Comandos simples
   const commands = {
     "/status": () => addMessage(`${activeAI.prefix} Sistemas operativos nominales. Escudo: 83%. Armamento: óptimo.`, activeAI.style),
     "/reset-ia": () => {
@@ -363,8 +366,23 @@ const handleUserInput = (text) => {
     }
   };
 
-  if (commands[cmd]) commands[cmd]();
-  else respondFromAI(text); // llama a la IA para responder
+  //  Comandos extendidos: Panel de misiones
+  if (cmd.startsWith("/missions") || cmd.startsWith("/misiones")) {
+    if (typeof toggleMissionPanel === "function") {
+      if (cmd.includes("show")) toggleMissionPanel(true); // mostrar explícitamente
+      else if (cmd.includes("hide")) toggleMissionPanel(false); // ocultar explícitamente
+      else toggleMissionPanel(); // alternar si no se especifica
+    }
+    return;
+  }
+
+  //  Ejecutar comando simple si existe
+  if (commands[cmd]) {
+    commands[cmd]();
+  } else {
+    //  Respuesta contextual de la IA
+    respondFromAI(text);
+  }
 };
 
 
@@ -386,43 +404,34 @@ const respondFromAI = (userMsg = "") => {
   else if (/(misterio|enigmas|secreto|oscuro)/.test(normalized)) category = "misterio";
   else if (/(alerta|peligro|riesgo|emergencia)/.test(normalized)) category = "alerta";
 
-  // Selecciona pool de respuestas y asegura que no esté vacío
-  let pool = activeAI.responses[category];
-  if (!pool || pool.length === 0) pool = activeAI.responses.normal;
-
-  const response = pool[Math.floor(Math.random() * pool.length)];
-
-  // Clase CSS según IA
-  const aiKey = Object.keys(AIs).find(key => AIs[key] === activeAI) || "GEMINI";
-  const aiClassMap = { GEMINI: "ai-gemini", VULKAN: "ai-vulkan", UROBOROS: "ai-uroboros", KERAUNNOS: "ai-keraunnos" };
-  const cssClass = aiClassMap[aiKey] || "text-green-200";
-
-  // Actualización de misiones según categoría
-  const missionMap = { combate: "Neutralizar hostiles", plan: "Asegurar recursos", saludo: "Reconocimiento de zona" };
-  if (missionMap[category]) updateMissionProgress(missionMap[category], 0.05);
-
-  // Retardo dinámico para simular escritura
-  const delay = 800 + response.length * 20;
-  setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
-};
-
-// ==== Mensajes automáticos periódicos robustos ====
-setInterval(() => {
-  if (!autoResponsesActive) return;
-
-  const categories = ["normal","humor","motivacion","misterio","alerta"];
-  const category = categories[Math.floor(Math.random() * categories.length)];
-
   // Pool seguro de respuestas
   let pool = activeAI.responses[category];
   if (!pool || pool.length === 0) pool = activeAI.responses.normal;
 
   const response = pool[Math.floor(Math.random() * pool.length)];
 
-  // Clase CSS según IA
+  // Clase CSS según IA 
   const aiKey = Object.keys(AIs).find(key => AIs[key] === activeAI) || "GEMINI";
   const aiClassMap = { GEMINI: "ai-gemini", VULKAN: "ai-vulkan", UROBOROS: "ai-uroboros", KERAUNNOS: "ai-keraunnos" };
   const cssClass = aiClassMap[aiKey] || "text-green-200";
+
+  // Misiones
+  const missionMap = { combate: "Neutralizar hostiles", plan: "Asegurar recursos", saludo: "Reconocimiento de zona" };
+  if (missionMap[category]) updateMissionProgress(missionMap[category], 0.05);
+
+  // Respuesta retardada
+  const delay = 800 + response.length * 20;
+  setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
+};
+
+
+// ==== Mensajes automáticos periódicos robustos ====
+setInterval(() => {
+  if (!autoResponsesActive) return;
+
+  const categories = ["normal", "humor", "motivacion", "misterio", "alerta"];
+  const category = categories[Math.floor(Math.random() * categories.length)];
+
 
   const delay = 800 + response.length * 20;
   setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
@@ -430,3 +439,7 @@ setInterval(() => {
 
 
 })();
+
+toggleMissionPanel();      // alternar
+toggleMissionPanel(true);  // forzar mostrar
+toggleMissionPanel(false); // forzar ocultar

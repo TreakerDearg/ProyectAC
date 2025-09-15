@@ -16,6 +16,14 @@
   font-family: 'Orbitron', monospace;
   z-index: 1000;
   color: #d1fae5;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Panel oculto (para toggle) */
+#mission-panel.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
 }
 
 /* Título */
@@ -42,7 +50,10 @@
   background: rgba(0, 255, 153, 0.05);
   border-left: 3px solid #00ff99;
   border-radius: 0.25rem;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.3s ease forwards;
 }
 
 /* Efecto hover */
@@ -105,12 +116,6 @@
 }
 
 /* Animación de aparición */
-.mission-item {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeInUp 0.3s ease forwards;
-}
-
 @keyframes fadeInUp {
   to {
     opacity: 1;
