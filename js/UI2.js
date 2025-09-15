@@ -1,5 +1,5 @@
 // --- AC Terminal UI Unificado ---
-// ===== Elementos =====
+// ===== Elementos del DOM =====
 const bootScreen     = document.getElementById('boot-screen');
 const authContainer  = document.getElementById('auth-container');
 const bootLog        = document.getElementById('boot-log');
@@ -15,8 +15,8 @@ const acLog          = document.getElementById('ac-log');
 
 const terminalToast  = document.getElementById('terminal-toast');
 
-// ===== Datos =====
-const acUnits = ['LAZARO','CHRONOS','VULTURE','ORION','TITAN','AEGIS','PHANTOM']; // ✅ sin acentos y en mayúsculas
+// ===== Datos del sistema =====
+const acUnits = ['LAZARO','CHRONOS','VULTURE','ORION','TITAN','AEGIS','PHANTOM']; // Unidades disponibles
 const logLines = [
   "[SISTEMA] Iniciando subsistemas...",
   "[SISTEMA] Verificando integridad de la unidad...",
@@ -24,23 +24,23 @@ const logLines = [
   "[SISTEMA] Inicialización completa."
 ];
 
-// Simulamos base de datos
+// Simulación de base de datos de pilotos
 const pilotos = {
   "Treaker": "1234",
   "Ace": "abcd",
   "Viper": "pass"
 };
 
-// ===== Funciones =====
+// ===== Funciones de animación y UI =====
 
-// Animación Boot
+// Animación tipo terminal para boot
 let currentLine = 0, charIndex = 0;
 function typeLine(speed = 40){
   if(currentLine < logLines.length){
     if(charIndex < logLines[currentLine].length){
       bootLog.textContent += logLines[currentLine][charIndex];
       charIndex++;
-      const variance = Math.random() * 20;
+      const variance = Math.random() * 20; // Pequeña variación en la velocidad
       setTimeout(() => typeLine(speed), speed - variance);
     } else {
       bootLog.textContent += '\n';
@@ -51,6 +51,7 @@ function typeLine(speed = 40){
     }
     bootLog.scrollTop = bootLog.scrollHeight;
   } else {
+    // Boot completado, mostrar login
     setTimeout(() => {
       bootScreen.classList.add('fade-out');
       setTimeout(() => {
@@ -63,6 +64,7 @@ function typeLine(speed = 40){
   }
 }
 
+// Actualiza barra de progreso estilo terminal
 function updateProgress(percent){
   const totalBars = 50;
   const filled = Math.floor(totalBars * percent);
@@ -70,7 +72,7 @@ function updateProgress(percent){
   bootProgress.textContent = `[${'='.repeat(filled)}${'.'.repeat(empty)}] ${Math.floor(percent*100)}%`;
 }
 
-// Login/Register Animación
+// ===== Animaciones para módulos login/register =====
 function swapModules(hideModule, showModule){
   hideModule.classList.add('fade-out');
   hideModule.style.transform = 'scale(0.97)';
@@ -82,6 +84,7 @@ function swapModules(hideModule, showModule){
   }, 500);
 }
 
+// Animación de aparición para módulos
 function animateModule(module){
   module.classList.add('fade-in');
   module.style.transform = 'scale(1.05)';
@@ -91,10 +94,11 @@ function animateModule(module){
   }, 500);
 }
 
+// Eventos para intercambiar login <-> register
 swapToRegister.addEventListener('click', () => swapModules(loginModule, registerModule));
 swapToLogin.addEventListener('click', () => swapModules(registerModule, loginModule));
 
-// Toast futurista
+// ===== Terminal toast estilo futurista =====
 function showTerminalToast(message) {
   terminalToast.textContent = "";
   terminalToast.classList.remove("hide");
@@ -107,6 +111,7 @@ function showTerminalToast(message) {
       index++;
       setTimeout(typeChar, 40);
     } else {
+      // Ocultar toast después de un tiempo
       setTimeout(() => {
         terminalToast.classList.remove("show");
         terminalToast.classList.add("hide");
@@ -116,7 +121,7 @@ function showTerminalToast(message) {
   typeChar();
 }
 
-// Efecto parpadeo
+// Efecto de parpadeo temporal
 function blinkEffect(element, duration = 3000){
   let visible = true;
   const interval = setInterval(() => {
@@ -126,13 +131,13 @@ function blinkEffect(element, duration = 3000){
   setTimeout(() => clearInterval(interval), duration);
 }
 
-// Login exitoso -> AC HUD
+// ===== Login exitoso y transición a AC HUD =====
 function loginExitosa(username){
-  const unit = acUnits[Math.floor(Math.random()*acUnits.length)]; // ✅ ahora siempre en mayúsculas
+  const unit = acUnits[Math.floor(Math.random() * acUnits.length)]; // Selección aleatoria de unidad
 
-  // Guardamos la unidad y usuario en sessionStorage
+  // Guardar info en sessionStorage
   sessionStorage.setItem('piloto', username);
-  sessionStorage.setItem('unidad', unit); // ✅ HUD.js ya espera en mayúsculas
+  sessionStorage.setItem('unidad', unit);
 
   authContainer.classList.add('fade-out');
   setTimeout(() => {
@@ -142,6 +147,7 @@ function loginExitosa(username){
     acLog.textContent = '';
     animateModule(acHUD);
 
+    // Secuencia de boot del HUD
     const acLines = [
       `[AC] Conectando sistemas...`,
       `[AC] Piloto: ${username}`,
@@ -151,13 +157,12 @@ function loginExitosa(username){
     ];
 
     let lineIndex = 0, charIdx = 0;
-
     function typeACLine(){
       if(lineIndex < acLines.length){
         if(charIdx < acLines[lineIndex].length){
           acLog.textContent += acLines[lineIndex][charIdx];
           charIdx++;
-          const variance = Math.random()*20;
+          const variance = Math.random() * 20;
           setTimeout(typeACLine, 40 - variance);
         } else {
           acLog.textContent += '\n';
@@ -175,12 +180,11 @@ function loginExitosa(username){
         setTimeout(() => window.location.href = "hub.html", 1500);
       }
     }
-
     typeACLine();
   }, 500);
 }
 
-// ===== Eventos Login / Registro =====
+// ===== Eventos de Login / Registro =====
 document.getElementById('btn-login').addEventListener('click', () => {
   const username = document.getElementById('login-username').value.trim();
   const password = document.getElementById('login-password').value.trim();
@@ -212,12 +216,13 @@ document.getElementById('btn-register').addEventListener('click', () => {
     return;
   }
 
+  // Registrar nuevo piloto
   pilotos[username] = password;
   showTerminalToast("Piloto registrado con éxito");
 
-  // Auto swap a login
+  // Auto swap a login después de registro
   swapModules(registerModule, loginModule);
 });
 
-// ===== Inicialización =====
+// ===== Inicialización de Boot =====
 typeLine();
