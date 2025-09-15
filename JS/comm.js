@@ -277,95 +277,96 @@ const AIs = {
     }
   }
 };
-  // ==== Selección persistente de IA ====
-  function getAssignedAI() {
-    let iaName = localStorage.getItem("ia_asignada");
-    if (!iaName || !AIs[iaName]) {
-      const keys = Object.keys(AIs);
-      iaName = keys[Math.floor(Math.random() * keys.length)];
-      localStorage.setItem("ia_asignada", iaName);
-    }
-    return AIs[iaName];
+// ==== Selección persistente de IA ====
+function getAssignedAI() {
+  let iaName = localStorage.getItem("ia_asignada");
+  if (!iaName || !AIs[iaName]) {
+    const keys = Object.keys(AIs);
+    iaName = keys[Math.floor(Math.random() * keys.length)];
+    localStorage.setItem("ia_asignada", iaName);
   }
+  return AIs[iaName];
+}
 
-  let activeAI = getAssignedAI();
-  let autoResponsesActive = true;
+let activeAI = getAssignedAI();
+let autoResponsesActive = true;
 
-  // ==== Timestamp ====
-  const timestamp = () => {
-    const now = new Date();
-    return `[${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")}]`;
-  };
+// ==== Timestamp ====
+const timestamp = () => {
+  const now = new Date();
+  return `[${now.getHours().toString().padStart(2,"0")}:${now.getMinutes().toString().padStart(2,"0")}]`;
+};
 
-  // ==== Agregar mensaje al log ====
-  const addMessage = (msg, cssClass = "text-green-200") => {
-    const div = document.createElement("div");
-    div.className = cssClass;
-    div.innerHTML = `${timestamp()} ${msg}`;
-    commLog.appendChild(div);
-    commLog.scrollTop = commLog.scrollHeight; // autoscroll
-  };
+// ==== Agregar mensaje al log ====
+const addMessage = (msg, cssClass = "text-green-200") => {
+  const div = document.createElement("div");
+  div.className = cssClass;
+  div.innerHTML = `${timestamp()} ${msg}`;
+  commLog.appendChild(div);
+  commLog.scrollTop = commLog.scrollHeight; // autoscroll
+};
 
-  // ==== Render inicial ====
-  addMessage("[SISTEMA] Panel de comunicaciones iniciado...", "text-gray-400");
-  addMessage("[SISTEMA] Seleccionando inteligencia artificial...", "text-gray-400");
-  setTimeout(() => addMessage(activeAI.presentacion, activeAI.style), 1500);
+// ==== Render inicial ====
+addMessage("[SISTEMA] Panel de comunicaciones iniciado...", "text-gray-400");
+addMessage("[SISTEMA] Seleccionando inteligencia artificial...", "text-gray-400");
+setTimeout(() => addMessage(activeAI.presentacion, activeAI.style), 1500);
 
-  // ==== Mini chat de bienvenida ====
-  activeAI.responses.saludo.forEach((resp, i) => {
-    setTimeout(() => addMessage(`${activeAI.prefix} ${resp}`, activeAI.style), 3000 + i * 2000);
+// ==== Mini chat de bienvenida ====
+activeAI.responses.saludo.forEach((resp, i) => {
+  setTimeout(() => addMessage(`${activeAI.prefix} ${resp}`, activeAI.style), 3000 + i * 2000);
+});
+
+// ==== Crear input dinámico con autofocus ====
+const createInput = () => {
+  if (document.getElementById(commInputId)) return;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.id = commInputId;
+  input.placeholder = "Escriba mensaje...";
+  input.className = "w-full mt-2 p-1 bg-black/80 border border-green-400 rounded text-green-200 focus:outline-none";
+  commPanel.appendChild(input);
+  input.focus();
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (text !== "") {
+        handleUserInput(text);
+        input.value = "";
+      }
+    }
   });
+};
+createInput();
 
-  // ==== Crear input dinámico con autofocus ====
-  const createInput = () => {
-    if (document.getElementById(commInputId)) return;
+// ==== Manejo de input con comandos y contexto ====
+const handleUserInput = (text) => {
+  addMessage(text, "user-message"); // muestra el mensaje del usuario
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.id = commInputId;
-    input.placeholder = "Escriba mensaje...";
-    input.className = "w-full mt-2 p-1 bg-black/80 border border-green-400 rounded text-green-200 focus:outline-none";
-    commPanel.appendChild(input);
-    input.focus();
-
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const text = input.value.trim();
-        if (text !== "") {
-          handleUserInput(text);
-          input.value = "";
-        }
-      }
-    });
+  const cmd = text.toLowerCase().trim();
+  const commands = {
+    "/status": () => addMessage(`${activeAI.prefix} Sistemas operativos nominales. Escudo: 83%. Armamento: óptimo.`, activeAI.style),
+    "/reset-ia": () => {
+      localStorage.removeItem("ia_asignada");
+      activeAI = getAssignedAI();
+      addMessage(`${activeAI.prefix} Nueva IA asignada: ${activeAI.presentacion}`, activeAI.style);
+    },
+    "/mute": () => {
+      autoResponsesActive = false;
+      addMessage(`${activeAI.prefix} Auto-respuestas desactivadas.`, activeAI.style);
+    },
+    "/unmute": () => {
+      autoResponsesActive = true;
+      addMessage(`${activeAI.prefix} Auto-respuestas activadas.`, activeAI.style);
+    }
   };
-  createInput();
 
-  // ==== Manejo de input con comandos y contexto ====
-  const handleUserInput = (text) => {
-    addMessage(text, "user-message"); // muestra el mensaje del usuario
+  if (commands[cmd]) commands[cmd]();
+  else respondFromAI(text); // llama a la IA para responder
+};
 
-    const cmd = text.toLowerCase().trim();
-    const commands = {
-      "/status": () => addMessage(`${activeAI.prefix} Sistemas operativos nominales. Escudo: 83%. Armamento: óptimo.`, activeAI.style),
-      "/reset-ia": () => {
-        localStorage.removeItem("ia_asignada");
-        activeAI = getAssignedAI();
-        addMessage(`${activeAI.prefix} Nueva IA asignada: ${activeAI.presentacion}`, activeAI.style);
-      },
-      "/mute": () => {
-        autoResponsesActive = false;
-        addMessage(`${activeAI.prefix} Auto-respuestas desactivadas.`, activeAI.style);
-      },
-      "/unmute": () => {
-        autoResponsesActive = true;
-        addMessage(`${activeAI.prefix} Auto-respuestas activadas.`, activeAI.style);
-      }
-    };
-
-    if (commands[cmd]) commands[cmd]();
-    else respondFromAI(text);
-  };
 
 // ==== Respuesta contextual de IA robusta ====
 const respondFromAI = (userMsg = "") => {
@@ -417,6 +418,11 @@ setInterval(() => {
   if (!pool || pool.length === 0) pool = activeAI.responses.normal;
 
   const response = pool[Math.floor(Math.random() * pool.length)];
+
+  // Clase CSS según IA
+  const aiKey = Object.keys(AIs).find(key => AIs[key] === activeAI) || "GEMINI";
+  const aiClassMap = { GEMINI: "ai-gemini", VULKAN: "ai-vulkan", UROBOROS: "ai-uroboros", KERAUNNOS: "ai-keraunnos" };
+  const cssClass = aiClassMap[aiKey] || "text-green-200";
 
   const delay = 800 + response.length * 20;
   setTimeout(() => addMessage(`${activeAI.prefix} ${response}`, cssClass), delay);
